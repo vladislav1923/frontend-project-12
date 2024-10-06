@@ -2,7 +2,10 @@ build:
 	rm -rf frontend/build
 	npm run build
 
-start:
-	npm run start
+start-frontend:
+	make -C frontend start
+
+start-backend:
+	npx start-server
 
 

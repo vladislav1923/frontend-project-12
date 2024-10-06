@@ -1,7 +1,15 @@
 import { Formik, Form, Field } from "formik";
-import { FloatingLabel, Form as BootstrapForm, Button } from "react-bootstrap";
+import { FloatingLabel, Form as BootstrapForm, Alert } from "react-bootstrap";
+import { useLoginMutation } from '../store/slices/auth';
+import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
+    const navigate = useNavigate();
+    const [
+        login,
+        { error, isLoading },
+    ] = useLoginMutation();
+
     return (
         <div className="card shadow-sm">
             <div className="card-body row p-5">
@@ -9,15 +17,19 @@ function LoginForm() {
                     <img src="/login.png" alt="Войти" className="rounded-circle" />
                 </div>
                 <Formik
-                    initialValues={{username: null, password: ""}}
-                    onSubmit={({setSubmitting}) => {
-                        console.log("Form is validated! Submitting the form...");
-                        setSubmitting(false);
+                    initialValues={{username: '', password: ''}}
+                    onSubmit={async (values) => {
+                        const response = await login(values);
+                        
+                        if (response?.data?.token) {
+                            navigate('/');
+                        }
                     }}
                 >
                     {() => (
                         <Form className="col-12 col-md-6 mt-3 mt-md-0">
                             <h1 className="text-center mb-4">Войти</h1>
+                            {error && <Alert variant="danger">Неверные имя пользователя или пароль</Alert>}
                             <div className="mb-3">
                                 <FloatingLabel label="Ваш ник">
                                     <BootstrapForm.Control
@@ -26,6 +38,7 @@ function LoginForm() {
                                         name="username"
                                         placeholder="Ваш ник"
                                         className="form-control"
+                                        isInvalid={!!error}
                                     />
                                 </FloatingLabel>
                             </div>
@@ -37,11 +50,12 @@ function LoginForm() {
                                         name="password"
                                         placeholder="Пароль"
                                         className="form-control"
+                                        isInvalid={!!error}
                                     />
                                 </FloatingLabel>
                             </div>
                             <div>
-                                <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
+                                <button type="submit" disabled={isLoading} className="w-100 mb-3 btn btn-outline-primary">Войти</button>
                             </div>
                         </Form>
                     )}
