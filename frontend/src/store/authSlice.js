@@ -1,7 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import {deleteLocalStorageItem, setLocalStorageItem, getLocalStorageItem} from "../utils/local-storage";
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {deleteLocalStorageItem, setLocalStorageItem, getLocalStorageItem} from "../utils/local-storage";
 
+const API_PATH = '/api/v1/login';
 const AUTH_DATA_LOCAL_STORAGE_KEY = 'auth_data';
 
 const storedData = getLocalStorageItem(AUTH_DATA_LOCAL_STORAGE_KEY);
@@ -20,7 +20,7 @@ export const login = createAsyncThunk(
     async (args) => {
         deleteLocalStorageItem(AUTH_DATA_LOCAL_STORAGE_KEY);
 
-        const response = await fetch('/api/v1/login', {
+        const response = await fetch(API_PATH, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'

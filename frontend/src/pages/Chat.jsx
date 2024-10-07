@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
+import {ChatBoard, ChannelModal} from "../components";
 
 function Chat() {
     const navigate = useNavigate();
@@ -12,7 +13,15 @@ function Chat() {
         }
     }, [isAuthenticated]);
 
-    return <p>Chat page</p>;
+    return (
+        <>
+            <div className="container h-100 my-4 overflow-hidden rounded shadow">
+                <ChatBoard/>
+            </div>
+
+            <ChannelModal />
+        </>
+    );
 }
 
 export default Chat;
