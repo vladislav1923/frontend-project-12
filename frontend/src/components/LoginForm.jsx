@@ -1,14 +1,22 @@
+import {useEffect} from "react";
 import { Formik, Form, Field } from "formik";
 import { FloatingLabel, Form as BootstrapForm, Alert } from "react-bootstrap";
-import { useLoginMutation } from '../store/slices/auth';
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "../store/authSlice";
 
 function LoginForm() {
     const navigate = useNavigate();
-    const [
-        login,
-        { error, isLoading },
-    ] = useLoginMutation();
+    const dispatch = useDispatch();
+    const isLoading = useSelector((state) => state.auth.isLoading);
+    const error = useSelector((state) => state.auth.error);
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/');
+        }
+    }, [isAuthenticated]);
 
     return (
         <div className="card shadow-sm">
@@ -19,11 +27,7 @@ function LoginForm() {
                 <Formik
                     initialValues={{username: '', password: ''}}
                     onSubmit={async (values) => {
-                        const response = await login(values);
-                        
-                        if (response?.data?.token) {
-                            navigate('/');
-                        }
+                        dispatch(login(values));
                     }}
                 >
                     {() => (
@@ -38,7 +42,7 @@ function LoginForm() {
                                         name="username"
                                         placeholder="Ваш ник"
                                         className="form-control"
-                                        isInvalid={!!error}
+                                        isInvalid={error}
                                     />
                                 </FloatingLabel>
                             </div>
@@ -50,7 +54,7 @@ function LoginForm() {
                                         name="password"
                                         placeholder="Пароль"
                                         className="form-control"
-                                        isInvalid={!!error}
+                                        isInvalid={error}
                                     />
                                 </FloatingLabel>
                             </div>

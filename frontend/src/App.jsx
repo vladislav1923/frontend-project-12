@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Login, Chat, NotFound } from './pages';
 import { Layout } from './components';
-import { store } from './store';
+import store from './store';
 
 function App() {
   return (

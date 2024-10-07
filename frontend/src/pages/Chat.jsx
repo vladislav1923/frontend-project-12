@@ -1,17 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import {getLocalStorageItem} from "../utils/local-storage";
-import { AUTH_DATA_LOCAL_STORAGE_KEY } from '../store/slices/auth';
 import {useEffect} from "react";
+import {useSelector} from "react-redux";
 
 function Chat() {
     const navigate = useNavigate();
-    const authData = getLocalStorageItem(AUTH_DATA_LOCAL_STORAGE_KEY);
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
     useEffect(() => {
-        if (!authData) {
+        if (!isAuthenticated) {
             navigate('/login');
         }
-    }, [authData]);
+    }, [isAuthenticated]);
 
     return <p>Chat page</p>;
 }
