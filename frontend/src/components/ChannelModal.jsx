@@ -1,18 +1,31 @@
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {useDispatch, useSelector} from "react-redux";
 import {closeModal} from "../store/channelsSlice";
+import {ChannelAddForm, ChannelRemoveForm} from "./";
 
 function ChannelModal() {
     const dispatch = useDispatch();
-    const isOpenModal = useSelector((state) => state.channels.isOpenModal);
+    const isOpen = useSelector((state) => state.channels.modal.isOpen);
+    const type = useSelector((state) => state.channels.modal.type);
+    const name = useSelector((state) => state.channels.modal.name);
+    const id = useSelector((state) => state.channels.modal.id);
+
+    const getModalContent = () => {
+        switch (type) {
+            case 'add':
+                return <ChannelAddForm/>;
+            case 'rename':
+                return <ChannelAddForm id={id} currentName={name}/>;
+            case 'remove':
+                return <ChannelRemoveForm id={id} />;
+            default:
+                return null;
+        }
+    }
 
     return (
-        <Modal show={isOpenModal} onHide={() => dispatch(closeModal())}>
-            <Modal.Header closeButton>
-                <Modal.Title>Добавить канал</Modal.Title>
-            </Modal.Header>
-
+        <Modal show={isOpen} onHide={() => dispatch(closeModal())}>
+            {getModalContent()}
         </Modal>
     );
 }

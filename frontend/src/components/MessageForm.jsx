@@ -6,7 +6,7 @@ import {addMessage} from "../store/messagesSlice";
 
 function MessageForm({channelId, username}) {
     const dispatch = useDispatch();
-    const isMessageAdding = useSelector((state) => state.messages.isMessageAdding);
+    const isMessageAdding = useSelector((state) => state.messages.chat.requestState === 'pending');
 
     return (
         <Formik

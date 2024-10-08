@@ -1,6 +1,7 @@
 import ChannelButton from './ChannelButton';
-import ChannelForm from "./ChannelForm";
+import ChannelAddForm from "./ChannelAddForm";
 import ChannelModal from "./ChannelModal";
+import ChannelRemoveForm from "./ChannelRemoveForm";
 import ChatBoard from './ChatBoard';
 import Layout from './Layout';
 import LoginForm from './LoginForm';
@@ -11,8 +12,9 @@ import PlusButton from './PlusButton';
 
 export {
     ChannelButton,
-    ChannelForm,
+    ChannelAddForm,
     ChannelModal,
+    ChannelRemoveForm,
     ChatBoard,
     Layout,
     LoginForm,

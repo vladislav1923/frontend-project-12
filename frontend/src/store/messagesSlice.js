@@ -4,9 +4,10 @@ const API_PATH = '/api/v1/messages';
 
 const initialState = {
     messages: [],
-    isLoading: false,
-    error: false,
-    isMessageAdding: false,
+    requestState: null, // 'pending' | 'succeeded' | 'failed'
+    chat: {
+        requestState: null, // 'pending' | 'succeeded' | 'failed'
+    }
 };
 
 export const getMessages = createAsyncThunk(
@@ -51,24 +52,22 @@ const messagesSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getMessages.pending, (state) => {
-                state.isLoading = true;
-                state.error = false;
+                state.requestState = 'pending';
             })
             .addCase(getMessages.fulfilled, (state, {payload}) => {
                 const { data } = payload;
-                if (data.error) {
-                    state.error = true;
-                } else {
+                if (!data.error) {
                     state.messages = data;
+                    state.requestState = 'succeeded';
+                } else {
+                    state.requestState = 'failed';
                 }
-
-                state.isLoading = false;
             })
             .addCase(addMessage.pending, (state) => {
-                state.isMessageAdding = true;
+                state.chat.requestState = 'pending';
             })
             .addCase(addMessage.fulfilled, (state) => {
-                state.isMessageAdding = false;
+                state.chat.requestState = 'succeeded';
             })
     },
 });
