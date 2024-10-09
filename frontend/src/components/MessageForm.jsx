@@ -1,11 +1,13 @@
 import { Formik, Form, Field } from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {Form as BootstrapForm} from "react-bootstrap";
+import {useTranslation} from "react-i18next";
 import {MessageButton} from "./";
 import {addMessage} from "../store/messagesSlice";
 
 function MessageForm({channelId, username}) {
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const isMessageAdding = useSelector((state) => state.messages.chat.requestState === 'pending');
 
     return (
@@ -24,8 +26,7 @@ function MessageForm({channelId, username}) {
                                 as={Field}
                                 type="text"
                                 name="body"
-                                aria-label="Новое сообщение"
-                                placeholder="Введите сообщение..."
+                                placeholder={t('chatBoard.messageFormPlaceholder')}
                                 className="border-0 p-0 ps-2 form-control"
                             />
                             <MessageButton disabled={!values.body || isMessageAdding}/>

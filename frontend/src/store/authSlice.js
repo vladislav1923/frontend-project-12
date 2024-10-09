@@ -10,7 +10,7 @@ const initialState = {
     token: parsedData ? parsedData.token : null,
     username: parsedData ? parsedData.username : null,
     requestState: null, // 'pending' | 'succeeded' | 'failed'
-    errorMessage: null,
+    errorCode: null, // 400 | 500
     isAuthenticated: !!parsedData,
 };
 
@@ -69,7 +69,7 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, {payload}) => {
                 const { data } = payload;
                 if (data.error) {
-                    state.errorMessage = 'Неверные имя пользователя или пароль';
+                    state.errorCode = 400;
                     state.requestState = 'failed';
                     state.isAuthenticated = false;
                 } else {
@@ -82,7 +82,7 @@ const authSlice = createSlice({
             })
             .addCase(login.rejected, (state) => {
                 state.requestState = 'failed';
-                state.errorMessage = 'Ошибка при попытке входа';
+                state.errorCode = 500;
                 state.isAuthenticated = false;
             })
             .addCase(signup.pending, (state) => {
@@ -93,7 +93,7 @@ const authSlice = createSlice({
             .addCase(signup.fulfilled, (state, {payload}) => {
                 const { data } = payload;
                 if (data.error) {
-                    state.errorMessage = 'Ошибка при попытке регистрации';
+                    state.errorCode = 500;
                     state.requestState = 'failed';
                     state.isAuthenticated = false;
                 } else {
@@ -106,7 +106,7 @@ const authSlice = createSlice({
             })
             .addCase(signup.rejected, (state) => {
                 state.requestState = 'failed';
-                state.errorMessage = 'Ошибка при попытке регистрации';
+                state.errorCode = 500;
                 state.isAuthenticated = false;
             });
     },

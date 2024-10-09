@@ -4,28 +4,31 @@ import { FloatingLabel, Form as BootstrapForm, Alert } from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import * as Yup from "yup";
+import {useTranslation} from "react-i18next";
 import {signup} from "../store/authSlice";
-
-const validationSchema = Yup.object().shape({
-    username: Yup.string()
-        .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов')
-        .required('Имя пользователя обязательно'),
-    password: Yup.string()
-        .min(6, 'От 6 до 20 символов')
-        .max(20, 'От 6 до 20 символов')
-        .required('Пароль обязателен'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
-});
 
 function SignupForm() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const isLoading = useSelector((state) => state.auth.requestState === 'pending');
     const isError = useSelector((state) => state.auth.requestState === 'failed');
-    const errorMessage = useSelector((state) => state.auth.errorMessage);
+    const errorCode = useSelector((state) => state.auth.errorCode);
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const [validationErrors, setValidationErrors] = useState({});
+
+    const validationSchema = Yup.object().shape({
+        username: Yup.string()
+            .min(3, t('signupForm.usernameLengthValidationError'))
+            .max(20, t('signupForm.usernameLengthValidationError'))
+            .required(t('signupForm.usernameValidationError')),
+        password: Yup.string()
+            .min(6, t('signupForm.passwordLengthValidationError'))
+            .max(20, t('signupForm.passwordLengthValidationError'))
+            .required(t('signupForm.passwordValidationError')),
+        confirmPassword: Yup.string()
+            .oneOf([Yup.ref('password'), null], t('signupForm.passwordConfirmValidationError')),
+    });
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -37,7 +40,7 @@ function SignupForm() {
         <div className="card shadow-sm">
             <div className="card-body row p-5">
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                    <img src="/signup.jpg" alt="Регистрация" className="rounded-circle" />
+                    <img src="/signup.jpg" alt={t('signupForm.title')} className="rounded-circle" />
                 </div>
                 <Formik
                     initialValues={{username: '', password: '', confirmPassword: ''}}
@@ -58,15 +61,15 @@ function SignupForm() {
                 >
                     {() => (
                         <Form className="col-12 col-md-6 mt-3 mt-md-0">
-                            <h1 className="text-center mb-4">Регистрация</h1>
-                            {isError && <Alert variant="danger">{errorMessage}</Alert>}
+                            <h1 className="text-center mb-4">{t('signupForm.title')}</h1>
+                            {isError && <Alert variant="danger">{errorCode === 400 ? t('signupForm.badRequestError') : t('signupForm.serverError')}</Alert>}
                             <div className="mb-3">
-                                <FloatingLabel label="Имя пользователя">
+                                <FloatingLabel label={t('signupForm.usernamePlaceholder')}>
                                     <BootstrapForm.Control
                                         as={Field}
                                         type="text"
                                         name="username"
-                                        placeholder="Имя пользователя"
+                                        placeholder={t('signupForm.usernamePlaceholder')}
                                         className="form-control"
                                         isInvalid={!!validationErrors?.username}
                                     />
@@ -76,12 +79,12 @@ function SignupForm() {
                                 </FloatingLabel>
                             </div>
                             <div className="mb-3">
-                                <FloatingLabel label="Пароль">
+                                <FloatingLabel label={t('signupForm.passwordPlaceholder')}>
                                     <BootstrapForm.Control
                                         as={Field}
                                         type="password"
                                         name="password"
-                                        placeholder="Пароль"
+                                        placeholder={t('signupForm.passwordPlaceholder')}
                                         className="form-control"
                                         isInvalid={!!validationErrors?.password}
                                     />
@@ -91,12 +94,12 @@ function SignupForm() {
                                 </FloatingLabel>
                             </div>
                             <div className="mb-3">
-                                <FloatingLabel label="Подтвердите пароль">
+                                <FloatingLabel label={t('signupForm.passwordConfirmPlaceholder')}>
                                     <BootstrapForm.Control
                                         as={Field}
                                         type="password"
                                         name="confirmPassword"
-                                        placeholder="Подтвердите пароль"
+                                        placeholder={t('signupForm.passwordConfirmPlaceholder')}
                                         className="form-control"
                                         isInvalid={!!validationErrors?.confirmPassword}
                                     />
@@ -108,7 +111,7 @@ function SignupForm() {
                             <div>
                                 <button type="submit" disabled={isLoading}
                                         className="w-100 mb-3 btn btn-outline-primary">
-                                    Зарегистрироваться
+                                    {t('signupForm.buttonText')}
                                 </button>
                             </div>
                         </Form>

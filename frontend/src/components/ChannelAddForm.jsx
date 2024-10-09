@@ -5,23 +5,24 @@ import {Form as BootstrapForm} from "react-bootstrap";
 import { toast } from 'react-toastify';
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import {addChannel, closeModal, renameChannel} from "../store/channelsSlice";
 import * as Yup from "yup";
-
-const validationSchema = Yup.object().shape({
-    name: Yup.string()
-        .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов')
-        .required('Обязательное поле'),
-});
-
+import {addChannel, closeModal, renameChannel} from "../store/channelsSlice";
+import {useTranslation} from "react-i18next";
 
 function ChannelAddForm({id, currentName}) {
     const ref = useRef(null);
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const isRequestPending = useSelector((state) => state.channels.modal.requestState === 'pending');
     const isRequestSucceeded = useSelector((state) => state.channels.modal.requestState === 'succeeded');
     const [validationErrors, setValidationErrors] = useState({});
+
+    const validationSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(3, t('channelAddForm.lengthValidationError'))
+            .max(20, t('channelAddForm.lengthValidationError'))
+            .required(t('channelAddForm.validationError')),
+    });
 
     useEffect(() => {
         if (ref.current) {
@@ -32,7 +33,7 @@ function ChannelAddForm({id, currentName}) {
     useEffect(() => {
         if (isRequestSucceeded) {
             dispatch(closeModal());
-            toast.success(`Канал ${currentName ? 'переименован' : 'успешно добавлен'}`);
+            toast.success(currentName ? t('channelAddForm.renameToastText') : t('channelAddForm.toastText'));
         }
     }, [isRequestSucceeded]);
 
@@ -61,7 +62,9 @@ function ChannelAddForm({id, currentName}) {
                 <>
                     <Form>
                         <Modal.Header>
-                            <Modal.Title>{currentName ? 'Переименовать' : 'Добавить'} канал</Modal.Title>
+                            <Modal.Title>
+                                {currentName ? t('channelAddForm.renameTitle') : t('channelAddForm.title')}
+                            </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Field name="name">
@@ -83,10 +86,10 @@ function ChannelAddForm({id, currentName}) {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => dispatch(closeModal())}>
-                                Отменить
+                                {t('channelAddForm.cancelButtonText')}
                             </Button>
                             <Button type="submit" variant="primary" disabled={values.name === currentName || isRequestPending}>
-                                Отправить
+                                {t('channelAddForm.buttonText')}
                             </Button>
                         </Modal.Footer>
                     </Form>

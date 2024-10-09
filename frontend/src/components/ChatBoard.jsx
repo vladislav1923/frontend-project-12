@@ -3,9 +3,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {initChannels, openModal, setActiveChannel} from "../store/channelsSlice";
 import {initMessages} from "../store/messagesSlice";
 import { ChannelButton, PlusButton, MessageForm, MessagesBox } from "./";
+import {useTranslation} from "react-i18next";
 
 function ChatBoard() {
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const username = useSelector((state) => state.auth.username);
     const channels = useSelector((state) => state.channels.channels);
     const messages = useSelector((state) => state.channels.messages);
@@ -19,14 +21,14 @@ function ChatBoard() {
     }, []);
 
     if (isChannelsFetching || isMessagesFetching) {
-        return '...loading';
+        return t('chatBoard.loadingText');
     }
 
     return (
         <div className="row h-100 bg-white flex-md-row">
             <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
                 <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-                    <b>Каналы</b>
+                    <b>{t('chatBoard.channelsTitle')}</b>
                     <PlusButton onClick={() => dispatch(openModal({ type: 'add' }))} />
                 </div>
                 <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
@@ -49,7 +51,9 @@ function ChatBoard() {
                         <p className="m-0">
                             <b># {activeChannel?.name}</b>
                         </p>
-                        <span className="text-muted">{messages[activeChannel?.id]?.length ?? 0} сообщений</span>
+                        <span className="text-muted">
+                            {t('chatBoard.messagesCount', {count: messages[activeChannel?.id]?.length ?? 0})}
+                        </span>
                     </div>
                     <MessagesBox messages={messages[activeChannel?.id]} />
                     <div className="mt-auto px-5 py-3">

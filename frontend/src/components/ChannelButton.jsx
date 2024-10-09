@@ -1,7 +1,10 @@
 import {ButtonGroup, Dropdown} from "react-bootstrap";
 import classNames from "classnames";
+import {useTranslation} from "react-i18next";
 
 function ChannelButton({channel, isActive, onClick, onRename, onRemove}) {
+    const {t} = useTranslation();
+
     if (!channel.removable) {
         return (
             <button type="button" className={classNames('w-100 rounded-0 text-start btn', {'btn-secondary': isActive})} onClick={onClick}>
@@ -19,8 +22,8 @@ function ChannelButton({channel, isActive, onClick, onRename, onRemove}) {
             <Dropdown.Toggle split variant={isActive ? "secondary" : "outline"} className={classNames('border-0')} />
 
             <Dropdown.Menu>
-                <Dropdown.Item onClick={onRemove}>Удалить</Dropdown.Item>
-                <Dropdown.Item onClick={onRename}>Переименовать</Dropdown.Item>
+                <Dropdown.Item onClick={onRemove}>{t('channelButton.removeText')}</Dropdown.Item>
+                <Dropdown.Item onClick={onRename}>{t('channelButton.renameText')}</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     );

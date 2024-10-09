@@ -1,13 +1,15 @@
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Form, useFormik} from "formik";
+import {useFormik} from "formik";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import {closeModal, removeChannel} from "../store/channelsSlice";
 import {toast} from "react-toastify";
+import {useTranslation} from "react-i18next";
+import {closeModal, removeChannel} from "../store/channelsSlice";
 
 function ChannelRemoveForm({id}) {
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const isRequestPending = useSelector((state) => state.channels.modal.requestState === 'pending');
     const isRequestSucceeded = useSelector((state) => state.channels.modal.requestState === 'succeeded');
     const formik = useFormik({
@@ -20,24 +22,24 @@ function ChannelRemoveForm({id}) {
     useEffect(() => {
         if (isRequestSucceeded) {
             dispatch(closeModal());
-            toast.success('Канал удален');
+            toast.success(t('channelRemoveForm.toastText'));
         }
     }, [isRequestSucceeded]);
 
     return (
         <form onSubmit={formik.handleSubmit}>
             <Modal.Header>
-                <Modal.Title>Удалить канал</Modal.Title>
+                <Modal.Title>{t('channelRemoveForm.title')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                Уверены?
+                {t('channelRemoveForm.bodyText')}
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={() => dispatch(closeModal())}>
-                    Отменить
+                    {t('channelRemoveForm.cancelButtonText')}
                 </Button>
                 <Button type="submit" variant="danger" disabled={isRequestPending}>
-                    Удалить
+                    {t('channelRemoveForm.buttonText')}
                 </Button>
             </Modal.Footer>
         </form>
