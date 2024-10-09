@@ -16,7 +16,7 @@ function Chat() {
     return (
         <>
             <div className="container h-100 my-4 overflow-hidden rounded shadow">
-                <ChatBoard/>
+                {isAuthenticated && <ChatBoard/>}
             </div>
 
             <ChannelModal />

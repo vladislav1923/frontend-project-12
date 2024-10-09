@@ -9,6 +9,7 @@ import MessageButton from "./MessageButton";
 import MessageForm from './MessageForm';
 import MessagesBox from "./MessagesBox";
 import PlusButton from './PlusButton';
+import SignupForm from "./SignupForm";
 
 export {
     ChannelButton,
@@ -22,4 +23,5 @@ export {
     MessageButton,
     MessagesBox,
     PlusButton,
+    SignupForm,
 };

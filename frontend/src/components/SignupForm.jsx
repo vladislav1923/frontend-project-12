@@ -4,14 +4,15 @@ import { FloatingLabel, Form as BootstrapForm, Alert } from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import * as Yup from "yup";
-import {login, signup} from "../store/authSlice";
+import {signup} from "../store/authSlice";
 
 const validationSchema = Yup.object().shape({
     username: Yup.string().required('Имя пользователя обязательно'),
     password: Yup.string().required('Пароль обязателен'),
+    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
 });
 
-function LoginForm() {
+function SignupForm() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isLoading = useSelector((state) => state.auth.requestState === 'pending');
@@ -30,15 +31,16 @@ function LoginForm() {
         <div className="card shadow-sm">
             <div className="card-body row p-5">
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                    <img src="/login.png" alt="Войти" className="rounded-circle" />
+                    <img src="/signup.jpg" alt="Регистрация" className="rounded-circle" />
                 </div>
                 <Formik
-                    initialValues={{username: '', password: ''}}
+                    initialValues={{username: '', password: '', confirmPassword: ''}}
                     onSubmit={async (values) => {
                         await validationSchema.validate(values, {abortEarly: false})
                             .then(() => {
                                 setValidationErrors({});
-                                dispatch(login(values));                            })
+                                dispatch(signup({ username: values.username, password: values.password }));
+                            })
                             .catch((e) => {
                                 const errors = {};
                                 e.inner.forEach(error => {
@@ -50,15 +52,15 @@ function LoginForm() {
                 >
                     {() => (
                         <Form className="col-12 col-md-6 mt-3 mt-md-0">
-                            <h1 className="text-center mb-4">Войти</h1>
+                            <h1 className="text-center mb-4">Регистрация</h1>
                             {isError && <Alert variant="danger">{errorMessage}</Alert>}
                             <div className="mb-3">
-                                <FloatingLabel label="Ваш ник">
+                                <FloatingLabel label="Имя пользователя">
                                     <BootstrapForm.Control
                                         as={Field}
                                         type="text"
                                         name="username"
-                                        placeholder="Ваш ник"
+                                        placeholder="Имя пользователя"
                                         className="form-control"
                                         isInvalid={!!validationErrors?.username}
                                     />
@@ -82,20 +84,33 @@ function LoginForm() {
                                     </BootstrapForm.Control.Feedback>
                                 </FloatingLabel>
                             </div>
+                            <div className="mb-3">
+                                <FloatingLabel label="Подтвердите пароль">
+                                    <BootstrapForm.Control
+                                        as={Field}
+                                        type="password"
+                                        name="confirmPassword"
+                                        placeholder="Подтвердите пароль"
+                                        className="form-control"
+                                        isInvalid={!!validationErrors?.confirmPassword}
+                                    />
+                                    <BootstrapForm.Control.Feedback type="invalid">
+                                        {validationErrors?.confirmPassword}
+                                    </BootstrapForm.Control.Feedback>
+                                </FloatingLabel>
+                            </div>
                             <div>
-                                <button type="submit" disabled={isLoading} className="w-100 mb-3 btn btn-outline-primary">Войти</button>
+                                <button type="submit" disabled={isLoading}
+                                        className="w-100 mb-3 btn btn-outline-primary">
+                                    Зарегистрироваться
+                                </button>
                             </div>
                         </Form>
                     )}
                 </Formik>
             </div>
-            <div className="card-footer p-4">
-                <div className="text-center">
-                    <span>Нет аккаунта?</span> <a href="/signup">Регистрация</a>
-                </div>
-            </div>
         </div>
     );
 };
 
-export default LoginForm;
+export default SignupForm;

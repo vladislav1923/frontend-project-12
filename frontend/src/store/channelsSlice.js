@@ -130,15 +130,17 @@ const channelsSlice = createSlice({
                 }
             })
             .addCase(getMessages.fulfilled, (state, {payload}) => {
-                state.messages = payload.data.reduce((acc, message) => {
-                    if (!acc[message.channelId]) {
-                        acc[message.channelId] = [];
-                    }
+                if (!payload?.data.error) {
+                    state.messages = payload?.data?.reduce((acc, message) => {
+                        if (!acc[message.channelId]) {
+                            acc[message.channelId] = [];
+                        }
 
-                    acc[message.channelId].push(message);
+                        acc[message.channelId].push(message);
 
-                    return acc;
-                }, {});
+                        return acc;
+                    }, {});
+                }
             })
             .addCase(addChannel.pending, (state, ) => {
                 state.modal.requestState = 'pending';
