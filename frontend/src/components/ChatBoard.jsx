@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getChannels, openModal, setActiveChannel} from "../store/channelsSlice";
-import {getMessages} from "../store/messagesSlice";
+import {initChannels, openModal, setActiveChannel} from "../store/channelsSlice";
+import {initMessages} from "../store/messagesSlice";
 import { ChannelButton, PlusButton, MessageForm, MessagesBox } from "./";
 
 function ChatBoard() {
@@ -14,8 +14,8 @@ function ChatBoard() {
     const isMessagesFetching = useSelector((state) => state.messages.requestState === 'pending');
 
     useEffect(() => {
-        dispatch(getChannels());
-        dispatch(getMessages());
+        dispatch(initChannels());
+        dispatch(initMessages());
     }, []);
 
     if (isChannelsFetching || isMessagesFetching) {

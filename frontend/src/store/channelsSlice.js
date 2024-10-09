@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {addMessage, getMessages} from "./messagesSlice";
+import {initMessages} from "./messagesSlice";
 
 const API_PATH = '/api/v1/channels';
 
@@ -19,7 +19,7 @@ const initialState = {
     }
 };
 
-export const getChannels = createAsyncThunk(
+export const initChannels = createAsyncThunk(
     'channels/get',
     async (_, {getState}) => {
         const state = getState();
@@ -56,7 +56,7 @@ export const addChannel = createAsyncThunk(
     }
 );
 
-export const updateChannel = createAsyncThunk(
+export const renameChannel = createAsyncThunk(
     'channels/update',
     async (body, {getState}) => {
         const state = getState();
@@ -150,10 +150,10 @@ const channelsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getChannels.pending, (state) => {
+            .addCase(initChannels.pending, (state) => {
                 state.requestState = 'pending';
             })
-            .addCase(getChannels.fulfilled, (state, {payload}) => {
+            .addCase(initChannels.fulfilled, (state, {payload}) => {
                 const { data } = payload;
                 if (!data.error) {
                     state.channels = data;
@@ -163,7 +163,7 @@ const channelsSlice = createSlice({
                     state.requestState = 'failed';
                 }
             })
-            .addCase(getMessages.fulfilled, (state, {payload}) => {
+            .addCase(initMessages.fulfilled, (state, {payload}) => {
                 if (!payload?.data.error) {
                     state.messages = payload?.data?.reduce((acc, message) => {
                         if (!acc[message.channelId]) {
@@ -183,10 +183,10 @@ const channelsSlice = createSlice({
                 state.modal.requestState = 'succeeded';
                 state.chat.activeChannel = payload.data;
             })
-            .addCase(updateChannel.pending, (state, ) => {
+            .addCase(renameChannel.pending, (state, ) => {
                 state.modal.requestState = 'pending';
             })
-            .addCase(updateChannel.fulfilled, (state, {payload}) => {
+            .addCase(renameChannel.fulfilled, (state, {payload}) => {
                 state.modal.requestState = 'succeeded';
             })
             .addCase(removeChannel.pending, (state, ) => {

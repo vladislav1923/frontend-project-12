@@ -4,7 +4,7 @@ import {Field, Form, Formik} from "formik";
 import {Form as BootstrapForm} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import {addChannel, closeModal, updateChannel} from "../store/channelsSlice";
+import {addChannel, closeModal, renameChannel} from "../store/channelsSlice";
 
 function ChannelAddForm({id, currentName}) {
     const ref = useRef(null);
@@ -29,7 +29,7 @@ function ChannelAddForm({id, currentName}) {
             initialValues={{name: currentName ?? ''}}
             onSubmit={async (values) => {
                 if (currentName) {
-                    dispatch(updateChannel({ id, name: values.name }));
+                    dispatch(renameChannel({ id, name: values.name }));
                 } else {
                     dispatch(addChannel({ name: values.name }));
                 }

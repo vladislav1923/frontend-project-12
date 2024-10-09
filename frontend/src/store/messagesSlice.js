@@ -10,7 +10,7 @@ const initialState = {
     }
 };
 
-export const getMessages = createAsyncThunk(
+export const initMessages = createAsyncThunk(
     'messages/get',
     async (_, {getState}) => {
         const state = getState();
@@ -53,10 +53,10 @@ const messagesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getMessages.pending, (state) => {
+            .addCase(initMessages.pending, (state) => {
                 state.requestState = 'pending';
             })
-            .addCase(getMessages.fulfilled, (state, {payload}) => {
+            .addCase(initMessages.fulfilled, (state, {payload}) => {
                 const { data } = payload;
                 if (!data.error) {
                     state.messages = data;
