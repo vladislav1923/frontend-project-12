@@ -7,8 +7,14 @@ import * as Yup from "yup";
 import {signup} from "../store/authSlice";
 
 const validationSchema = Yup.object().shape({
-    username: Yup.string().required('Имя пользователя обязательно'),
-    password: Yup.string().required('Пароль обязателен'),
+    username: Yup.string()
+        .min(3, 'От 3 до 20 символов')
+        .max(20, 'От 3 до 20 символов')
+        .required('Имя пользователя обязательно'),
+    password: Yup.string()
+        .min(6, 'От 6 до 20 символов')
+        .max(20, 'От 6 до 20 символов')
+        .required('Пароль обязателен'),
     confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
 });
 
