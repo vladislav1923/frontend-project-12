@@ -134,6 +134,9 @@ const channelsSlice = createSlice({
             if (found) {
                 state.channels = state.channels.filter((channel) => channel.id !== payload.id);
                 delete state.messages[payload.id];
+                if (state.chat.activeChannel.id === payload.id) {
+                    state.chat.activeChannel = state.channels[0];
+                }
             }
         },
         handleChannelGotRenamed(state, {payload}) {
