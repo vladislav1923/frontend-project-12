@@ -12,8 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.4",
-    "socket.io-client": "^4.8.0",
-    "yup": "^1.4.0"
+    "@hexlet/chat-server": "^2.0.4"
   }
 }

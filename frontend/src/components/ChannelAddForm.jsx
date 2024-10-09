@@ -2,6 +2,7 @@ import {useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Field, Form, Formik} from "formik";
 import {Form as BootstrapForm} from "react-bootstrap";
+import { toast } from 'react-toastify';
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import {addChannel, closeModal, renameChannel} from "../store/channelsSlice";
@@ -21,6 +22,7 @@ function ChannelAddForm({id, currentName}) {
     useEffect(() => {
         if (isRequestSucceeded) {
             dispatch(closeModal());
+            toast.success(`Канал ${currentName ? 'переименован' : 'успешно добавлен'}`);
         }
     }, [isRequestSucceeded]);
 

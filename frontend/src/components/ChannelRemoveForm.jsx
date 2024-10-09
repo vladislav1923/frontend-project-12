@@ -4,6 +4,7 @@ import {Form, useFormik} from "formik";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import {closeModal, removeChannel} from "../store/channelsSlice";
+import {toast} from "react-toastify";
 
 function ChannelRemoveForm({id}) {
     const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function ChannelRemoveForm({id}) {
     useEffect(() => {
         if (isRequestSucceeded) {
             dispatch(closeModal());
+            toast.success('Канал удален');
         }
     }, [isRequestSucceeded]);
 
