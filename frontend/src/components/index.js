@@ -1,3 +1,4 @@
+import App from './App';
 import ChannelButton from './ChannelButton';
 import ChannelAddForm from "./ChannelAddForm";
 import ChannelModal from "./ChannelModal";
@@ -12,6 +13,7 @@ import PlusButton from './PlusButton';
 import SignupForm from "./SignupForm";
 
 export {
+    App,
     ChannelButton,
     ChannelAddForm,
     ChannelModal,

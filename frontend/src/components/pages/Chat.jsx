@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
-import {ChatBoard, ChannelModal} from "../components";
+import {ChatBoard, ChannelModal} from "../";
 
 function Chat() {
     const navigate = useNavigate();
