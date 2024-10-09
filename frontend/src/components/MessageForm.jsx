@@ -11,8 +11,9 @@ function MessageForm({channelId, username}) {
     return (
         <Formik
             initialValues={{body: ''}}
-            onSubmit={async (values) => {
+            onSubmit={async (values, { resetForm }) => {
                 dispatch(addMessage({ channelId, username, body: values.body }));
+                resetForm();
             }}
         >
             {({values}) => (

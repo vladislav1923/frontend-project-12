@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {getMessages} from "./messagesSlice";
+import {addMessage, getMessages} from "./messagesSlice";
 
 const API_PATH = '/api/v1/channels';
 
@@ -113,6 +113,40 @@ const channelsSlice = createSlice({
             state.modal.id = null;
             state.modal.requestState = null;
         },
+        handleMessageGotAdded(state, {payload}) {
+            const current = state.messages[payload.channelId] ?? [];
+            const found = current.find((message) => message.id === payload.id);
+            if (!found) {
+                state.messages = {
+                    ...state.messages,
+                    [payload.channelId]: [...current, payload],
+                };
+            }
+        },
+        handleChannelGotAdded(state, {payload}) {
+            const found = state.channels.find((channel) => channel.id === payload.id);
+            if (!found) {
+                state.channels = [...state.channels, payload];
+            }
+        },
+        handleChannelGotRemoved(state, {payload}) {
+            const found = state.channels.find((channel) => channel.id === payload.id);
+            if (found) {
+                state.channels = state.channels.filter((channel) => channel.id !== payload.id);
+                delete state.messages[payload.id];
+            }
+        },
+        handleChannelGotRenamed(state, {payload}) {
+            const found = state.channels.find((channel) => channel.id === payload.id);
+            if (found.name !== payload.name) {
+                state.channels = state.channels.map((channel) => {
+                    if (channel.id === payload.id) {
+                        return payload;
+                    }
+                    return channel;
+                });
+            }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -147,7 +181,6 @@ const channelsSlice = createSlice({
             })
             .addCase(addChannel.fulfilled, (state, {payload}) => {
                 state.modal.requestState = 'succeeded';
-                state.channels = [...state.channels, payload.data];
                 state.chat.activeChannel = payload.data;
             })
             .addCase(updateChannel.pending, (state, ) => {
@@ -155,20 +188,12 @@ const channelsSlice = createSlice({
             })
             .addCase(updateChannel.fulfilled, (state, {payload}) => {
                 state.modal.requestState = 'succeeded';
-                state.channels = state.channels.map((channel) => {
-                    if (channel.id === payload.data.id) {
-                        return payload.data;
-                    }
-                    return channel;
-                });
             })
             .addCase(removeChannel.pending, (state, ) => {
                 state.modal.requestState = 'pending';
             })
             .addCase(removeChannel.fulfilled, (state, {payload}) => {
                 state.modal.requestState = 'succeeded';
-                state.channels = state.channels.filter((channel) => channel.id !== payload.data.id);
-                delete state.messages[payload.data.id];
             });
     },
 });

@@ -30,9 +30,9 @@ export const getMessages = createAsyncThunk(
 
 export const addMessage = createAsyncThunk(
     'messages/add',
-    async (body, {getState, dispatch}) => {
+    async (body, {getState}) => {
         const state = getState();
-        await fetch(API_PATH, {
+        const response = await fetch(API_PATH, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
@@ -41,7 +41,9 @@ export const addMessage = createAsyncThunk(
             body: JSON.stringify(body),
         });
 
-        dispatch(getMessages());
+        const data = await response.json();
+
+        return { data };
     }
 );
 
@@ -68,7 +70,7 @@ const messagesSlice = createSlice({
             })
             .addCase(addMessage.fulfilled, (state) => {
                 state.chat.requestState = 'succeeded';
-            })
+            });
     },
 });
 
