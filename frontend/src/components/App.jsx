@@ -1,12 +1,24 @@
+import {useEffect} from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { Login, Chat, NotFound, Signup } from './pages';
 import { Layout } from './';
 import store from '../store';
+import {useNetworkState} from "../hooks";
+import {useTranslation} from "react-i18next";
 
 function App() {
-  return (
+    const { t } = useTranslation();
+    const networkState = useNetworkState();
+
+    useEffect(() => {
+        if (!networkState) {
+            toast.error(t('app.offlineToastText'));
+        }
+    }, [networkState]);
+
+    return (
       <>
           <Provider store={store}>
               <Layout>
@@ -22,7 +34,7 @@ function App() {
           </Provider>
           <ToastContainer />
       </>
-  );
+    );
 }
 
 export default App;

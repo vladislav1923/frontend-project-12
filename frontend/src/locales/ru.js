@@ -1,5 +1,8 @@
 export default {
     translation: {
+        app: {
+          offlineToastText: 'Соединение с сетью потеряно',
+        },
         layout: {
             title: 'Hexlet Chat',
             logoutText: 'Выйти',
