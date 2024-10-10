@@ -56,7 +56,7 @@ const LoginForm = () => {
               <h1 className="text-center mb-4">{t('loginForm.title')}</h1>
               {isError && <Alert variant="danger">{errorCode === 400 ? t('signupForm.badRequestError') : t('signupForm.serverError')}</Alert>}
               <div className="mb-3">
-                <FloatingLabel label={t('loginForm.usernamePlaceholder')}>
+                <FloatingLabel controlId="username" label={t('loginForm.usernamePlaceholder')}>
                   <BootstrapForm.Control
                     as={Field}
                     type="text"
@@ -71,7 +71,7 @@ const LoginForm = () => {
                 </FloatingLabel>
               </div>
               <div className="mb-3">
-                <FloatingLabel label={t('loginForm.passwordPlaceholder')}>
+                <FloatingLabel controlId="password" label={t('loginForm.passwordPlaceholder')}>
                   <BootstrapForm.Control
                     as={Field}
                     type="password"

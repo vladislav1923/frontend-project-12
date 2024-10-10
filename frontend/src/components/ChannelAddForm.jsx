@@ -81,13 +81,16 @@ const ChannelAddForm = ({ id, currentName }) => {
             <Field name="name">
               {({ field }) => (
                 <>
-                  <BootstrapForm.Control
-                    {...field}
-                    type="text"
-                    ref={ref}
-                    className="form-control"
-                    isInvalid={!!validationErrors?.name}
-                  />
+                  <BootstrapForm.Group>
+                    <BootstrapForm.Label visuallyHidden>{t('channelAddForm.labelText')}</BootstrapForm.Label>
+                    <BootstrapForm.Control
+                      {...field}
+                      type="text"
+                      ref={ref}
+                      className="form-control"
+                      isInvalid={!!validationErrors?.name}
+                    />
+                  </BootstrapForm.Group>
                   <BootstrapForm.Control.Feedback type="invalid">
                     {validationErrors?.name}
                   </BootstrapForm.Control.Feedback>

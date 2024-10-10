@@ -23,7 +23,13 @@ const ChannelButton = ({
         {channel.name}
       </button>
 
-      <Dropdown.Toggle split variant={isActive ? 'secondary' : 'outline'} className={classNames('border-0')} />
+      <Dropdown.Toggle
+        split
+        variant={isActive ? 'secondary' : 'outline'}
+        className={classNames('border-0')}
+      >
+        <span className="visually-hidden">{t('channelButton.labelText')}</span>
+      </Dropdown.Toggle>
 
       <Dropdown.Menu>
         <Dropdown.Item onClick={onRemove}>{t('channelButton.removeText')}</Dropdown.Item>

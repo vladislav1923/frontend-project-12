@@ -63,6 +63,7 @@ const ChatBoard = () => {
             <p className="m-0">
               <b>
                 #
+                {' '}
                 {activeChannel?.name}
               </b>
             </p>

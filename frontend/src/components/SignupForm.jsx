@@ -30,6 +30,17 @@ const SignupForm = () => {
       .oneOf([Yup.ref('password'), null], t('signupForm.passwordConfirmValidationError')),
   });
 
+  const getErrorMessage = () => {
+    switch (errorCode) {
+      case 409:
+        return t('signupForm.conflictRequestError');
+      case 400:
+        return t('signupForm.badRequestError');
+      default:
+        return t('signupForm.serverError');
+    }
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/');
@@ -62,9 +73,9 @@ const SignupForm = () => {
           {() => (
             <Form className="col-12 col-md-6 mt-3 mt-md-0">
               <h1 className="text-center mb-4">{t('signupForm.title')}</h1>
-              {isError && <Alert variant="danger">{errorCode === 400 ? t('signupForm.badRequestError') : t('signupForm.serverError')}</Alert>}
+              {isError && <Alert variant="danger">{getErrorMessage()}</Alert>}
               <div className="mb-3">
-                <FloatingLabel label={t('signupForm.usernamePlaceholder')}>
+                <FloatingLabel controlId="username" label={t('signupForm.usernamePlaceholder')}>
                   <BootstrapForm.Control
                     as={Field}
                     type="text"
@@ -79,7 +90,7 @@ const SignupForm = () => {
                 </FloatingLabel>
               </div>
               <div className="mb-3">
-                <FloatingLabel label={t('signupForm.passwordPlaceholder')}>
+                <FloatingLabel controlId="password" label={t('signupForm.passwordPlaceholder')}>
                   <BootstrapForm.Control
                     as={Field}
                     type="password"
@@ -94,7 +105,7 @@ const SignupForm = () => {
                 </FloatingLabel>
               </div>
               <div className="mb-3">
-                <FloatingLabel label={t('signupForm.passwordConfirmPlaceholder')}>
+                <FloatingLabel controlId="confirmPassword" label={t('signupForm.passwordConfirmPlaceholder')}>
                   <BootstrapForm.Control
                     as={Field}
                     type="password"

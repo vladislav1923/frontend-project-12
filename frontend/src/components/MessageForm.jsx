@@ -42,6 +42,7 @@ const MessageForm = ({ channelId, username }) => {
               as={Field}
               type="text"
               name="body"
+              aria-label={t('messageAddForm.ariaLabel')}
               placeholder={t('messageAddForm.placeholder')}
               className="border-0 p-0 ps-2 form-control"
             />

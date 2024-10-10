@@ -10,7 +10,7 @@ const initialState = {
   token: parsedData ? parsedData.token : null,
   username: parsedData ? parsedData.username : null,
   requestState: null, // 'pending' | 'succeeded' | 'failed'
-  errorCode: null, // 400 | 500
+  errorCode: null, // 400 | 409 | 500
   isAuthenticated: !!parsedData,
 };
 
@@ -104,10 +104,11 @@ const authSlice = createSlice({
       }))
       .addCase(signup.fulfilled, (state, { payload }) => {
         const { data } = payload;
+        console.log(data);
         if (data.error) {
           return {
             ...state,
-            errorCode: 500,
+            errorCode: data.statusCode,
             requestState: 'failed',
             isAuthenticated: false,
           };
