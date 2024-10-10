@@ -82,9 +82,10 @@ const ChannelAddForm = ({ id, currentName }) => {
               {({ field }) => (
                 <>
                   <BootstrapForm.Group>
-                    <BootstrapForm.Label visuallyHidden>{t('channelAddForm.labelText')}</BootstrapForm.Label>
+                    <BootstrapForm.Label htmlFor="name" visuallyHidden>{t('channelAddForm.labelText')}</BootstrapForm.Label>
                     <BootstrapForm.Control
                       {...field}
+                      id="name"
                       type="text"
                       ref={ref}
                       className="form-control"
