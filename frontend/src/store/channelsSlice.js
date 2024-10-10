@@ -57,7 +57,7 @@ export const addChannel = createAsyncThunk(
 );
 
 export const renameChannel = createAsyncThunk(
-    'channels/update',
+    'channels/rename',
     async (body, {getState}) => {
         const state = getState();
         const response = await fetch(`${API_PATH}/${body.id}`, {
@@ -166,6 +166,9 @@ const channelsSlice = createSlice({
                     state.requestState = 'failed';
                 }
             })
+            .addCase(initChannels.rejected, (state) => {
+                state.requestState = 'failed';
+            })
             .addCase(initMessages.fulfilled, (state, {payload}) => {
                 if (!payload?.data.error) {
                     state.messages = payload?.data?.reduce((acc, message) => {
@@ -186,17 +189,26 @@ const channelsSlice = createSlice({
                 state.modal.requestState = 'succeeded';
                 state.chat.activeChannel = payload.data;
             })
+            .addCase(addChannel.rejected, (state) => {
+                state.modal.requestState = 'failed';
+            })
             .addCase(renameChannel.pending, (state, ) => {
                 state.modal.requestState = 'pending';
             })
             .addCase(renameChannel.fulfilled, (state, {payload}) => {
                 state.modal.requestState = 'succeeded';
             })
+            .addCase(renameChannel.rejected, (state) => {
+                state.modal.requestState = 'failed';
+            })
             .addCase(removeChannel.pending, (state, ) => {
                 state.modal.requestState = 'pending';
             })
             .addCase(removeChannel.fulfilled, (state, {payload}) => {
                 state.modal.requestState = 'succeeded';
+            })
+            .addCase(removeChannel.rejected, (state) => {
+                state.modal.requestState = 'failed';
             });
     },
 });

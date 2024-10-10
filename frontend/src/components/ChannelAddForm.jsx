@@ -15,6 +15,7 @@ function ChannelAddForm({id, currentName}) {
     const {t} = useTranslation();
     const isRequestPending = useSelector((state) => state.channels.modal.requestState === 'pending');
     const isRequestSucceeded = useSelector((state) => state.channels.modal.requestState === 'succeeded');
+    const isRequestFailed = useSelector((state) => state.channels.modal.requestState === 'failed');
     const [validationErrors, setValidationErrors] = useState({});
 
     const validationSchema = Yup.object().shape({
@@ -33,9 +34,19 @@ function ChannelAddForm({id, currentName}) {
     useEffect(() => {
         if (isRequestSucceeded) {
             dispatch(closeModal());
-            toast.success(currentName ? t('channelAddForm.renameToastText') : t('channelAddForm.toastText'));
+            toast.success(
+                currentName ? t('channelAddForm.renameToastText') : t('channelAddForm.toastText')
+            );
         }
     }, [isRequestSucceeded]);
+
+    useEffect(() => {
+        if (isRequestFailed) {
+            toast.error(
+                currentName ? t('channelAddForm.errorRenameToastText') : t('channelAddForm.errorToastText')
+            );
+        }
+    }, [isRequestFailed]);
 
     return (
         <Formik

@@ -65,11 +65,17 @@ const messagesSlice = createSlice({
                     state.requestState = 'failed';
                 }
             })
+            .addCase(initMessages.rejected, (state) => {
+                state.requestState = 'failed';
+            })
             .addCase(addMessage.pending, (state) => {
                 state.chat.requestState = 'pending';
             })
             .addCase(addMessage.fulfilled, (state) => {
                 state.chat.requestState = 'succeeded';
+            })
+            .addCase(addMessage.rejected, (state) => {
+                state.chat.requestState = 'failed';
             });
     },
 });

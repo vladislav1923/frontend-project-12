@@ -4,6 +4,7 @@ import {initChannels, openModal, setActiveChannel} from "../store/channelsSlice"
 import {initMessages} from "../store/messagesSlice";
 import { ChannelButton, PlusButton, MessageForm, MessagesBox } from "./";
 import {useTranslation} from "react-i18next";
+import {toast} from "react-toastify";
 
 function ChatBoard() {
     const dispatch = useDispatch();
@@ -14,11 +15,19 @@ function ChatBoard() {
     const activeChannel = useSelector((state) => state.channels.chat.activeChannel);
     const isChannelsFetching = useSelector((state) => state.channels.requestState === 'pending');
     const isMessagesFetching = useSelector((state) => state.messages.requestState === 'pending');
+    const isChannelsError = useSelector((state) => state.channels.requestState === 'failed');
+    const isMessagesError = useSelector((state) => state.messages.requestState === 'failed');
 
     useEffect(() => {
         dispatch(initChannels());
         dispatch(initMessages());
     }, []);
+
+    useEffect(() => {
+        if (isChannelsError || isMessagesError) {
+            toast.error(t('chatBoard.errorText'));
+        }
+    }, [isChannelsError, isMessagesError]);
 
     if (isChannelsFetching || isMessagesFetching) {
         return t('chatBoard.loadingText');

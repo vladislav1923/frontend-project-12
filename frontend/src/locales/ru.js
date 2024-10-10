@@ -36,7 +36,11 @@ export default {
             messagesCount_one: "{{count}} сообщение",
             messagesCount_few: "{{count}} сообщения",
             messagesCount_many: "{{count}} сообщений",
-            messageFormPlaceholder: 'Введите сообщение...',
+            errorText: 'Ошибка загрузки данных',
+        },
+        messageAddForm: {
+            placeholder: 'Введите сообщение...',
+            errorToastText: 'Ошибка при отправке сообщения',
         },
         channelAddForm: {
             title: 'Добавить канал',
@@ -47,6 +51,8 @@ export default {
             renameToastText: 'Канал переименован',
             buttonText: 'Отправить',
             cancelButtonText: 'Отменить',
+            errorToastText: 'Ошибка при добавлении канала',
+            errorRenameToastText: 'Ошибка при переименовании канала',
         },
         channelRemoveForm: {
             title: 'Удалить канал',
@@ -54,6 +60,7 @@ export default {
             toastText: 'Канал удален',
             buttonText: 'Удалить',
             cancelButtonText: 'Отменить',
+            errorToastText: 'Ошибка при удалении канала',
         },
         channelButton: {
             removeText: 'Удалить',

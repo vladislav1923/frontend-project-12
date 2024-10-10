@@ -12,6 +12,7 @@ function ChannelRemoveForm({id}) {
     const {t} = useTranslation();
     const isRequestPending = useSelector((state) => state.channels.modal.requestState === 'pending');
     const isRequestSucceeded = useSelector((state) => state.channels.modal.requestState === 'succeeded');
+    const isRequestFailed = useSelector((state) => state.channels.modal.requestState === 'failed');
     const formik = useFormik({
         initialValues: {},
         onSubmit: () => {
@@ -25,6 +26,12 @@ function ChannelRemoveForm({id}) {
             toast.success(t('channelRemoveForm.toastText'));
         }
     }, [isRequestSucceeded]);
+
+    useEffect(() => {
+        if (isRequestFailed) {
+            toast.error(t('channelRemoveForm.errorToastText'));
+        }
+    }, [isRequestFailed]);
 
     return (
         <form onSubmit={formik.handleSubmit}>
