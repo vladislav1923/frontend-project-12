@@ -2,11 +2,11 @@ import {useEffect} from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import {useTranslation} from "react-i18next";
 import { Login, Chat, NotFound, Signup } from './pages';
 import { Layout } from './';
 import store from '../store';
 import {useNetworkState} from "../hooks";
-import {useTranslation} from "react-i18next";
 
 function App() {
     const { t } = useTranslation();

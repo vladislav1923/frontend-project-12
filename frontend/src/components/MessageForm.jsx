@@ -1,11 +1,12 @@
+import {useEffect, useRef} from "react";
 import { Formik, Form, Field } from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {Form as BootstrapForm} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
+import {toast} from "react-toastify";
 import {MessageButton} from "./";
 import {addMessage} from "../store/messagesSlice";
-import {useEffect, useRef} from "react";
-import {toast} from "react-toastify";
+import profanity from "../utils/leo-profanity";
 
 function MessageForm({channelId, username}) {
     const ref = useRef(null);
@@ -31,7 +32,7 @@ function MessageForm({channelId, username}) {
         <Formik
             initialValues={{body: ''}}
             onSubmit={async (values) => {
-                dispatch(addMessage({ channelId, username, body: values.body }));
+                dispatch(addMessage({ channelId, username, body: profanity.clean(values.body) }));
             }}
         >
             {({values}) => (

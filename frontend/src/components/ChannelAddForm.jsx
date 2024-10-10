@@ -3,11 +3,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {Field, Form, Formik} from "formik";
 import {Form as BootstrapForm} from "react-bootstrap";
 import { toast } from 'react-toastify';
+import {useTranslation} from "react-i18next";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import * as Yup from "yup";
 import {addChannel, closeModal, renameChannel} from "../store/channelsSlice";
-import {useTranslation} from "react-i18next";
+import profanity from "../utils/leo-profanity";
 
 function ChannelAddForm({id, currentName}) {
     const ref = useRef(null);
@@ -55,9 +56,9 @@ function ChannelAddForm({id, currentName}) {
                 await validationSchema.validate(values, {abortEarly: false})
                     .then(() => {
                         if (currentName) {
-                            dispatch(renameChannel({ id, name: values.name }));
+                            dispatch(renameChannel({ id, name: profanity.clean(values.name) }));
                         } else {
-                            dispatch(addChannel({ name: values.name }));
+                            dispatch(addChannel({ name: profanity.clean(values.name) }));
                         }
                     })
                     .catch((e) => {
