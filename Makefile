@@ -19,3 +19,6 @@ start:
 develop:
 	make start-backend & make start-frontend
 
+tests:
+	npm test
+
