@@ -46,6 +46,7 @@ export default {
       placeholder: 'Введите сообщение...',
       ariaLabel: 'Новое сообщение',
       errorToastText: 'Ошибка при отправке сообщения',
+      buttonLabel: 'Отправить',
     },
     channelAddForm: {
       title: 'Добавить канал',

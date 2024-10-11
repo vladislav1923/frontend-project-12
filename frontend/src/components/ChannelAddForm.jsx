@@ -84,7 +84,10 @@ const ChannelAddForm = ({ id, currentName }) => {
                   <BootstrapForm.Group>
                     <BootstrapForm.Label htmlFor="name" visuallyHidden>{t('channelAddForm.labelText')}</BootstrapForm.Label>
                     <BootstrapForm.Control
-                      {...field}
+                      name={field.name}
+                      value={field.value}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
                       id="name"
                       type="text"
                       ref={ref}
